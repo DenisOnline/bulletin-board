@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bulletin_board.bulletin_board.dtos.ImageDto;
 import ru.bulletin_board.bulletin_board.models.Post;
+import ru.bulletin_board.bulletin_board.models.User;
 import ru.bulletin_board.bulletin_board.services.PostService;
+import ru.bulletin_board.bulletin_board.services.UserService;
 import ru.bulletin_board.bulletin_board.utils.DataFormatting;
 import ru.bulletin_board.bulletin_board.utils.PhoneNumberFormatting;
 import ru.bulletin_board.bulletin_board.utils.PriceFormatting;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final UserService userService;
 
     @GetMapping("/")
     public String posts(@RequestParam(name = "heading", required = false) String heading, Model model) {
@@ -42,11 +47,12 @@ public class PostController {
     @PostMapping("/post/create")
     public String createPost(@Valid @ModelAttribute("post") Post post,
                              BindingResult bindingResult,
-                             @RequestParam("file") MultipartFile[] multipartFile) throws IOException {
+                             @RequestParam("file") MultipartFile[] multipartFile,
+                             Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
             return "add";
         }
-        postService.savePost(multipartFile, post);
+        postService.savePost(multipartFile, post, principal);
         return "redirect:/";
     }
 
@@ -60,12 +66,16 @@ public class PostController {
     public String postInfo(@PathVariable Long id, Model model) {
         Post post = postService.getPostById(id);
         String price = PriceFormatting.priceFormatting(post.getPrice());
-        List<ImageDto> imageDtos = postService.listImagesDtos(post);
         String phoneNumber = PhoneNumberFormatting.formatPhoneNumber(post.getPhoneNumber());
+        List<ImageDto> imageDtos = postService.listImagesDtos(post);
+        User user = post.getUser();
+        String dateOfCreatedUser = DataFormatting.timeFormatting(user.getDateOfCreated());
         model.addAttribute("post", post);
         model.addAttribute("price", price);
         model.addAttribute("phoneNumber", phoneNumber);
         model.addAttribute("images", imageDtos);
+        model.addAttribute("user", user);
+        model.addAttribute("dateOfCreatedUser", dateOfCreatedUser);
         return "post-info";
     }
 }

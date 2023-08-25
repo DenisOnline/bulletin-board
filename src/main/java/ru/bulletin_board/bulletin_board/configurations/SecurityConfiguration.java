@@ -3,6 +3,7 @@ package ru.bulletin_board.bulletin_board.configurations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -14,23 +15,25 @@ import ru.bulletin_board.bulletin_board.services.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
     public static final String DEFAULT_SUCCESS_URL = "/";
-    public static final String PRODUCTS_URL = "/product/**";
+    public static final String POST_URL = "/post/**";
     public static final String IMAGES_URL = "/images/**";
     public static final String REGISTRATION_URL = "/registration";
     public static final String USERNAME_PARAMETER = "email";
+    public static final String USER_URL = "/user/**";
     private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(DEFAULT_SUCCESS_URL, PRODUCTS_URL, IMAGES_URL, REGISTRATION_URL).permitAll()
+                        .requestMatchers(DEFAULT_SUCCESS_URL, POST_URL, IMAGES_URL, REGISTRATION_URL, USER_URL).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

@@ -77,9 +77,20 @@
                     </div>
                     <div class="col-9">
                         <div class="form-outline mb-4">
-                            <input class="form-control" type="text" name="address" th:field="*{address}"/>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                            <input class="form-control" type="text" name="address" th:field="*{city}"/>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
                         </div>
+
+                        <div class="form-outline mb-4">
+                            <input class="form-control" type="text" name="address" th:field="*{street}"/>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input class="form-control" type="text" name="address" th:field="*{houseNumber}"/>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}"></div>
+                        </div>
+
                         <div style="position:relative;overflow:hidden;"><a
                                 href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps"
                                 style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a
@@ -103,6 +114,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                 <button type="submit" class="btn btn-primary">Опубликовать</button>
             </div>
         </form>

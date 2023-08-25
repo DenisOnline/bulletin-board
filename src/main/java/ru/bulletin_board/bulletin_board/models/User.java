@@ -1,15 +1,17 @@
 package ru.bulletin_board.bulletin_board.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.bulletin_board.bulletin_board.models.enums.Role;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -19,17 +21,31 @@ public class User implements UserDetails {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "email", unique = true)
+    @Email(message = "Неверный формат email адреса")
+    @NotEmpty(message = "Поле не может быть пустым")
+    @Size(max = 255, message = "Email не должен превышать 255 символов")
     private String email;
+
     @Column(name = "phoneNumber")
+    @NotEmpty(message = "Поле не может быть пустым")
+    @Pattern(regexp = "^\\+?[0-9]*$", message = "Номер телефона должен содержать только цифры и символ '+'")
     private String phoneNumber;
+
     @Column(name = "name")
+    @NotEmpty(message = "Поле не может быть пустым")
     private String name;
+
     @Column(name = "password")
+    @NotEmpty(message = "Поле не может быть пустым")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$",
+            message = "Пароль должен содержать минимум 8 символов, включая хотя бы одну букву верхнего и нижнего регистра, цифру и специальный символ (@#$%^&+=!)")
     private String password;
-//    @Column(name = "avatar")
-//    @JoinColumn(name = "image_id")
+
+    //    @Column(name = "avatar")
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "image_id")
 //    private Image avatar;
     @Column(name = "active")
     private boolean active;
@@ -40,7 +56,14 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Post> products = new ArrayList<>();
+
     private LocalDateTime dateOfCreated;
+
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
 
     @PrePersist
     private void init() {

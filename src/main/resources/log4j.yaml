@@ -1,0 +1,31 @@
+Configuration:
+  status: info
+
+  appenders:
+    Console:
+      name: ConsoleAppender
+      PatternLayout:
+        pattern: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+
+    RollingFile:
+      - name: LogToRollingFile
+        fileName: logs/springDelete.log
+        filePattern: "logs/springDelete-%d{yyyy-MM-dd}-%i.log.rar"
+        PatternLayout:
+          pattern: "%d{dd.MM.yyyy HH:mm:ss.SSS} %-5level - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 1MB
+        DefaultRollOverStrategy:
+          max: 10
+  Loggers:
+    logger:
+      - name: org.springframework
+        level: info
+        AppenderRef:
+          - ref: ConsoleAppender
+    Root:
+      level: debug
+      AppenderRef:
+        - ref: ConsoleAppender
+        - ref: LogToRollingFile

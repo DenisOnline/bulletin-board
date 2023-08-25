@@ -81,10 +81,10 @@
                         </div>
                     </div>
                     <br>
-                    <a th:href="'/messenger'" class="btn btn-primary">Написать сообщение</a>
-                    <h2>Продавец!</h2>
+                    <a th:href="'/messenger'" class="btn btn-primary">Написать сообщение</a><br>
+                    <a th:href="'/user/' + ${user.getId()}" th:text="${user.name}" class="fs-4 text-decoration-none text-body"></a>
                     <p>когда был в сети!</p>
-                    <p>на этой площадке с [дата]!</p>
+                    <p th:text="'На плащадке с ' + ${dateOfCreatedUser}">
                 </div>
             </div>
             <br>
