@@ -1,0 +1,65 @@
+<div th:fragment="search-bar">
+    <div class="input-group mb-5">
+        <input type="search" class="form-control rounded" placeholder="Поиск" aria-label="Search"
+               aria-describedby="search-addon"/>
+        <div class="dropdown">
+            <button class="btn btn-light ms-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Все категории
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Транспорт</a></li>
+                <li><a class="dropdown-item" href="#">Недвижимость</a></li>
+                <li><a class="dropdown-item" href="#">Работа</a></li>
+                <li><a class="dropdown-item" href="#">Услуги</a></li>
+                <li><a class="dropdown-item" href="#">Личные вещи</a></li>
+                <li><a class="dropdown-item" href="#">Для дома и дачи</a></li>
+                <li><a class="dropdown-item" href="#">Запчасти</a></li>
+                <li><a class="dropdown-item" href="#">Электроника</a></li>
+                <li><a class="dropdown-item" href="#">Хобби и отдых</a></li>
+                <li><a class="dropdown-item" href="#">Животные</a></li>
+                <li><a class="dropdown-item" href="#">Бизнес</a></li>
+            </ul>
+        </div>
+        <button type="button" class="btn btn-outline-primary ms-1">Найти</button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-link ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Россия
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Выбери город</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Москва</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Санкт-Петербург</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Новосибирск</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Екатеринбург</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Казань</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Нижний Новгород</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Красноярск</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Челябинск</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Самара</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Уфа</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Ростов-на-Дону</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Краснодар</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Омск</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Воронеж</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Пермь</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Волгоград</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Саратов</a>
+                        <a href="#" class="nav-link p-0 text-body-secondary mb-1">Тюмень</a>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
