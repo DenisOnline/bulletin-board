@@ -10,10 +10,7 @@ import ru.bulletin_board.bulletin_board.models.Post;
 import ru.bulletin_board.bulletin_board.services.PostService;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @Controller
@@ -23,7 +20,9 @@ public class PostController {
     @GetMapping("/")
     public String posts(@RequestParam(name = "heading", required = false) String heading, Model model) {
         List<Post> posts = postService.listPosts(heading);
+        Map<Long, String> times = postService.timeFromPosts(posts);
         model.addAttribute("posts", posts);
+        model.addAttribute("times", times);
         return "index";
     }
 

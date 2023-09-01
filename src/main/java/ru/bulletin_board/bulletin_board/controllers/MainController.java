@@ -17,19 +17,27 @@ public class MainController {
 //    public String add() {
 //        return "add";
 //    }
-//
     @GetMapping("/messenger")
     public String messenger() {
         return "messenger";
     }
-//
-//    @GetMapping("/dialog-box")
-//    public String dialogBox() {
-//        return "dialog-box";
-//    }
-//
-//    @GetMapping("/profile")
-//    public String profile() {
-//        return "profile";
-//    }
+
+    @GetMapping("/dialog-box")
+    public String dialogBox() {
+        return "dialog-box";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "profile";
+    }
+
+    @GetMapping("/registration")
+    public String reg() {
+        return "registration";
+    }
+    @GetMapping("/authorization")
+    public String login() {
+        return "authorization";
+    }
 }

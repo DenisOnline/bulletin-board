@@ -68,6 +68,7 @@
                                         <h6 th:text="${post.heading}"></h6>
                                         <p th:text="${post.price}"></p>
                                         <p th:text="${post.address}"></p>
+                                        <p th:text="${times.get(post.id)}"></p>
                                         <a th:href="'/post/' + ${post.id}" class="btn btn-warning">Подробнее</a>
                                     </div>
                                 </div>

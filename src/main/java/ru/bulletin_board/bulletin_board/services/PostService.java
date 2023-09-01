@@ -14,9 +14,10 @@ import ru.bulletin_board.bulletin_board.repositories.PostRepository;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -60,8 +61,12 @@ public class PostService {
         return data.format(DATA_FORMAT);
     }
 
-    public Post getPostByHeading(String heading) {
-        return postRepository.searchForPostByHeading(heading);
+    public Map<Long, String> timeFromPosts(List<Post> posts) {
+        Map<Long, String> dataMap = new HashMap<>();
+        posts.forEach(post -> {
+            dataMap.put(post.getId(), timeFormatting(post.getDateTime()));
+        });
+        return dataMap;
     }
 
     @Transactional
