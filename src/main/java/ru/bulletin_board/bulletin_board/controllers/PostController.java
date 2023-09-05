@@ -1,8 +1,10 @@
 package ru.bulletin_board.bulletin_board.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bulletin_board.bulletin_board.dtos.ImageDto;
@@ -26,13 +28,18 @@ public class PostController {
         return "index";
     }
 
-    @GetMapping("/post/creat")
-    public String pageCreatPost() {
+    @GetMapping("/post/create")
+    public String pageCreatePost(Post post) {
         return "add";
     }
 
-    @PostMapping("/post/creat")
-    public String creatPost(@RequestParam("file") MultipartFile multipartFile, Post post) throws IOException {
+    @PostMapping("/post/create")
+    public String createPost(@Valid @ModelAttribute("post") Post post,
+                            BindingResult bindingResult,
+                            @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "add";
+        }
         postService.savePost(multipartFile, post);
         return "redirect:/";
     }
