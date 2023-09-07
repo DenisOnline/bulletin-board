@@ -23,6 +23,8 @@ public class Image {
     private String originalFileName;
     @Column(name = "contentType")
     private String contentType;
+    @Column(name = "previewImage")
+    private boolean previewImage;
     @Lob
     private byte[] bytes;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>title</title>
-    <favicon th:replace="fragments/favicon :: favicon"></favicon>
+    <link rel="shortcut icon" href="/images/icon.ico"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
@@ -43,28 +43,13 @@
                 </div>
             </div>
 
-            <!--            <div class="row">-->
-            <!--                <div class="col-md-4">-->
-            <!--                    <div class="card mb-4 box-shadow">-->
-            <!--                        <div th:each="image : ${images}">-->
-            <!--                            <img th:src="@{'/images/post/' + ${image.id}}">-->
-            <!--                        </div>-->
-            <!--                        <div th:each="post : ${posts}" class="card-body">-->
-
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
             <div class="row">
                 <div class="col-9">
                     <div class="container">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                             <div th:each="post : ${posts}" class="col">
                                 <div class="card shadow-sm">
-                                    <div th:each="image : ${images}" class="col-8">
-                                        <img th:src="@{'/images/post/' + ${image.id}}" alt="img" width="225px" height="225px"/>
-                                    </div>
+                                    <img th:src="@{'/image/post/' + ${post.getPreviewImageId()}}" alt="img" width="300" height="225"/>
                                     <div  class="card-body">
                                         <h6 th:text="${post.heading}"></h6>
                                         <p th:text="${post.price}"></p>
@@ -76,6 +61,7 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                     <a th:href="'/post/create'" class="btn btn-warning">Создать</a>
                 </div>
                 <div class="col-3">

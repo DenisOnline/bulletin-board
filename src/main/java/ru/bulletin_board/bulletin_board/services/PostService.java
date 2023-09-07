@@ -14,10 +14,7 @@ import ru.bulletin_board.bulletin_board.repositories.PostRepository;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -34,17 +31,23 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void savePost(MultipartFile multipartFile, Post post) throws IOException {
-        Image image = new Image();
-        if (!multipartFile.isEmpty()) {
-            image.setName(multipartFile.getName());
-            image.setOriginalFileName(multipartFile.getOriginalFilename());
-            image.setContentType(multipartFile.getContentType());
-            image.setSize(String.valueOf(multipartFile.getSize()));
-            image.setBytes(multipartFile.getBytes());
-            post.addImageToPost(image);
+    public void savePost(MultipartFile[] multipartFile, Post post) throws IOException {
+        Image image;
+        if (multipartFile.length != 0) {
+            for (int i = 0; i < multipartFile.length; i++) {
+                if (i == 0) {
+                    image = toImageEntity(multipartFile[i]);
+                    image.setPreviewImage(true);
+                    post.addImageToPost(image);
+                } else {
+                    image = toImageEntity(multipartFile[i]);
+                    post.addImageToPost(image);
+                }
+            }
         }
         log.info("Saving new Post. Title: {}" , post.getHeading());
+        Post productFromDb = postRepository.save(post);
+        productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
         postRepository.save(post);
     }
 
@@ -69,9 +72,20 @@ public class PostService {
         return dataMap;
     }
 
-    @Transactional
-    public List<ImageDto> listImagesDtos(Post post) {
-        return imageRepository.findAllByPost(post).stream().map(i -> new ImageDto(i.getId())).toList();
+    private Image toImageEntity(MultipartFile file) throws IOException {
+        Image image = new Image();
+        image.setName(file.getName());
+        image.setOriginalFileName(file.getOriginalFilename());
+        image.setContentType(file.getContentType());
+        image.setSize(String.valueOf(file.getSize()));
+        image.setBytes(file.getBytes());
+        return image;
     }
 
+    @Transactional
+    public List<ImageDto> listImagesDtos(Post post) {
+        List<ImageDto> imageDtos = new ArrayList<>(imageRepository.findAllByPost(post).stream().map(i -> new ImageDto(i.getId())).toList());
+        imageDtos.remove(0);
+        return imageDtos;
+    }
 }

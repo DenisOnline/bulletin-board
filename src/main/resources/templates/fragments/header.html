@@ -2,21 +2,21 @@
     <header class="p-3 text-bg-dark">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <button type="button" class="btn btn-link btn-floating mx-1">
-                    <img src="/images/icon.png" height="48" width="48"/>
-                </button>
+                <a th:href="'/'" type="button" class="btn btn-link btn-floating mx-1">
+                    <img src="/images/icon.png" height="48" width="48" alt="icon"/>
+                </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 text-secondary">Главная</a></li>
+                    <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Избранное</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Уведомления</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">Сообщения</a></li>
+                    <li><a href="/messenger" class="nav-link px-2 text-white">Сообщения</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Мои объявления</a></li>
                 </ul>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Регистрация</button>
-                    <button type="button" class="btn btn-warning">Вход</button>
+                    <a th:href="'/registration'" class="btn btn-outline-light me-2">Регистрация</a>
+                    <a th:href="'/authorization'" class="btn btn-warning">Вход</a>
                 </div>
             </div>
         </div>

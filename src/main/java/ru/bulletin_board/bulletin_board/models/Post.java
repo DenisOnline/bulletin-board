@@ -45,6 +45,9 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
     private List<Image> images = new ArrayList<>();
 
+    @Column(name = "preview_image_id")
+    private Long previewImageId;
+
     private LocalDateTime dateTime;
 
     @PrePersist

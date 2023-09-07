@@ -12,6 +12,7 @@ import ru.bulletin_board.bulletin_board.models.Post;
 import ru.bulletin_board.bulletin_board.services.PostService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class PostController {
     @PostMapping("/post/create")
     public String createPost(@Valid @ModelAttribute("post") Post post,
                             BindingResult bindingResult,
-                            @RequestParam("file") MultipartFile multipartFile) throws IOException {
+                            @RequestParam("file") MultipartFile[] multipartFile) throws IOException {
         if (bindingResult.hasErrors()) {
             return "add";
         }
