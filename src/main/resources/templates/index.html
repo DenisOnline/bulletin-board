@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/header :: header(isAuthenticated=${isAuthenticated})"></header>
 <main>
     <div class="album py-5 bg-body-tertiary">
         <div class="container w-85">
@@ -53,9 +53,7 @@
                                     <div class="card-body">
                                         <h6 th:text="${post.heading}"></h6>
                                         <p th:text="${prices.get(post.id)}  + ' ₽'"></p>
-                                        <p th:text="${post.city}"></p>
-                                        <p th:text="${post.street}"></p>
-                                        <p th:text="${post.houseNumber}"></p>
+                                        <p th:text="${post.city} + ', ' + ${post.street} + ', ' + ${post.houseNumber}"></p>
                                         <p th:text="${times.get(post.id)}"></p>
                                         <a th:href="'/post/' + ${post.id}" class="btn btn-warning">Подробнее</a>
                                     </div>
@@ -64,7 +62,7 @@
                         </div>
                     </div>
                     <br>
-                    <a th:href="'/post/create'" class="btn btn-warning">Создать</a>
+
                 </div>
                 <div class="col-3">
                     <h4 class="mb-3">Избранное</h4>

@@ -11,7 +11,7 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/header :: header(isAuthenticated=${isAuthenticated})"></header>
 <main>
     <div class="album py-5 bg-body-tertiary">
         <div class="container w-25">

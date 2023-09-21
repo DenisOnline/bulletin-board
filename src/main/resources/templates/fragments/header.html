@@ -14,16 +14,27 @@
                     <li><a href="#" class="nav-link px-2 text-white">Мои объявления</a></li>
                 </ul>
 
-                <div class="text-end">
+                <div th:unless="${isAuthenticated  == false}" class="text-end">
+                    <a th:href="'/admin/user'" class="btn btn-warning">Панель администратора</a>
+                </div>
+
+                <div th:unless="${isAuthenticated == true}" class="text-end">
                     <a th:href="'/registration'" class="btn btn-outline-light me-2">Регистрация</a>
                     <a th:href="'/login'" class="btn btn-warning">Вход</a>
-                    <a th:href="'/admin/user'" class="btn btn-warning">Панель администратора</a> <!--th:if="${user.isAdmin()}"-->
                 </div>
-                <div class="text-end">
+
+                <div th:unless="${isAuthenticated == false}" class="text-end">
                     <form th:action="@{/logout}" method="post">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <a th:href="'/user/profile/4'" type="button" class="btn btn-link btn-floating mx-1">
+                            <img src="/images/headshot.ico" height="40" width="40" alt="icon"/>
+                        </a>
                         <a th:href="'/login'" class="btn btn-warning">Выход</a>
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     </form>
+                </div>
+
+                <div class="text-end" style="margin-left: 10px;">
+                    <a th:href="'/post/create'" class="btn btn-warning">Создать</a>
                 </div>
             </div>
         </div>

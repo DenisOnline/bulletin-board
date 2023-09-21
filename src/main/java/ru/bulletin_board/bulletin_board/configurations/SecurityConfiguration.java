@@ -22,7 +22,7 @@ public class SecurityConfiguration {
     public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
     public static final String DEFAULT_SUCCESS_URL = "/";
-    public static final String POST_URL = "/post/**";
+    public static final String POST_URL = "/post/**";//TODO: ссылка post/creat должна быть не доступна до авторизации
     public static final String IMAGES_URL = "/images/**";
     public static final String REGISTRATION_URL = "/registration";
     public static final String USERNAME_PARAMETER = "email";
@@ -33,7 +33,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(DEFAULT_SUCCESS_URL, POST_URL, IMAGES_URL, REGISTRATION_URL, USER_URL).permitAll()
+                        .requestMatchers(DEFAULT_SUCCESS_URL, IMAGES_URL, REGISTRATION_URL, USER_URL).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

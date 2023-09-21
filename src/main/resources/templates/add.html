@@ -12,29 +12,17 @@
 </head>
 
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/header :: header(isAuthenticated=${isAuthenticated})"></header>
 <main>
     <div class="album py-5 bg-body-tertiary">
-        <form action="/post/create" method="POST" th:object="${post}" enctype="multipart/form-data">
+        <form th:action="'/post/create'" method="post" th:object="${post}" enctype="multipart/form-data">
             <div class="container w-50">
                 <h2 class="mb-3">Новое объявление</h2>
                 <h3 class="mb-2">Фотографии:</h3>
-<!--                Загрузить файл<input type="file" name="file">-->
                 <div class="mb-2">
                     <input id="file" name="file" type="file" class="form-control" data-show-upload="false"
                            data-show-caption="true" multiple>
                 </div>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item">
-                        <img src="" alt="img" class="img-thumbnail">
-                    </li>
-                    <li class="list-group-item">
-                        <img src="" alt="img" class="img-thumbnail">
-                    </li>
-                    <li class="list-group-item">
-                        <img src="" alt="img" class="img-thumbnail">
-                    </li>
-                </ul>
                 <h3 class="mb-2">Подробная информация</h3>
                 <div class="row">
                     <div class="col-3">
@@ -42,8 +30,9 @@
                     </div>
                     <div class="col-9">
                         <div class="form-outline mb-4">
-                            <input type="text" id="heading" name="heading" class="form-control" />
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('heading')}" th:errors="*{heading}"></div>
+                            <input th:field="*{heading}" type="text" id="heading" name="heading" class="form-control"/>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('heading')}"
+                                 th:errors="*{heading}"></div>
                         </div>
                     </div>
 
@@ -53,8 +42,10 @@
                     <div class="col-9 mb-3">
                         <form>
                             <div class="form-group">
-                                <textarea class="form-control" id="DescriptionFormControlTextarea" rows="3" name="description" th:field="*{description}"></textarea>
-                                <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                <textarea class="form-control" id="DescriptionFormControlTextarea" rows="3"
+                                          name="description" th:field="*{description}"></textarea>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}"
+                                     th:errors="*{description}"></div>
                             </div>
                         </form>
                     </div>
@@ -67,7 +58,8 @@
                             <div class="col-4">
                                 <div class="form-outline mb-4">
                                     <input class="form-control" type="text" name="price" th:field="*{price}"/>
-                                    <div class="alert alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                    <div class="alert alert-warning" th:if="${#fields.hasErrors('price')}"
+                                         th:errors="*{price}"></div>
                                 </div>
                             </div>
                         </div>
@@ -76,32 +68,50 @@
                         <p>Адрес</p>
                     </div>
                     <div class="col-9">
-                        <div class="form-outline mb-4">
-                            <input class="form-control" type="text" name="address" th:field="*{city}"/>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                        <div class="col-3">
+                            <p>Город</p>
+                        </div>
+                        <div class="col-9">
+                            <div class="form-outline mb-4">
+                                <input class="form-control" type="text" name="address" th:field="*{city}"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('city')}"
+                                     th:errors="*{city}"></div>
+                            </div>
                         </div>
 
-                        <div class="form-outline mb-4">
-                            <input class="form-control" type="text" name="address" th:field="*{street}"/>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>
+                        <div class="col-3">
+                            <p>Улица</p>
+                        </div>
+                        <div class="col-9">
+                            <div class="form-outline mb-4">
+                                <input class="form-control" type="text" name="address" th:field="*{street}"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('street')}"
+                                     th:errors="*{street}"></div>
+                            </div>
                         </div>
 
-                        <div class="form-outline mb-4">
-                            <input class="form-control" type="text" name="address" th:field="*{houseNumber}"/>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}"></div>
+                        <div class="col-3">
+                            <p>Дом</p>
+                        </div>
+                        <div class="col-9">
+                            <div class="form-outline mb-4">
+                                <input class="form-control" type="text" name="address" th:field="*{houseNumber}"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('houseNumber')}"
+                                     th:errors="*{houseNumber}"></div>
+                            </div>
                         </div>
 
-                        <div style="position:relative;overflow:hidden;"><a
-                                href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps"
-                                style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a
-                                href="https://yandex.ru/maps/213/moscow/?ll=37.691528%2C55.738716&utm_medium=mapframe&utm_source=maps&z=10.51"
-                                style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва и Московская
-                            область —
-                            Яндекс Карты</a>
-                            <iframe src="https://yandex.ru/map-widget/v1/?ll=37.691528%2C55.738716&z=10.51" width="560"
-                                    height="400" frameborder="1" allowfullscreen="true"
-                                    style="position:relative;"></iframe>
-                        </div>
+<!--                        <div style="position:relative;overflow:hidden;"><a-->
+<!--                                href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps"-->
+<!--                                style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a-->
+<!--                                href="https://yandex.ru/maps/213/moscow/?ll=37.691528%2C55.738716&utm_medium=mapframe&utm_source=maps&z=10.51"-->
+<!--                                style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва и Московская-->
+<!--                            область —-->
+<!--                            Яндекс Карты</a>-->
+<!--                            <iframe src="https://yandex.ru/map-widget/v1/?ll=37.691528%2C55.738716&z=10.51" width="560"-->
+<!--                                    height="400" frameborder="1" allowfullscreen="true"-->
+<!--                                    style="position:relative;"></iframe>-->
+<!--                        </div>-->
                     </div>
                     <h3>Контакты</h3>
                     <div class="col-3">
@@ -110,7 +120,8 @@
                     <div class="col-9">
                         <div class="form-group mb-5">
                             <input class="form-control" type="text" name="phoneNumber" th:field="*{phoneNumber}"/>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('phoneNumber')}"
+                                 th:errors="*{phoneNumber}"></div>
                         </div>
                     </div>
                 </div>

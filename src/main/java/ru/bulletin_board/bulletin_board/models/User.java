@@ -1,11 +1,10 @@
 package ru.bulletin_board.bulletin_board.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.bulletin_board.bulletin_board.models.enums.Role;
@@ -14,8 +13,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Data
 @Table(name = "users")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @Column(name = "id")
@@ -43,10 +44,9 @@ public class User implements UserDetails {
             message = "Пароль должен содержать минимум 8 символов, включая хотя бы одну букву верхнего и нижнего регистра, цифру и специальный символ (@#$%^&+=!)")
     private String password;
 
-    //    @Column(name = "avatar")
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "image_id")
-//    private Image avatar;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private Image avatar;
     @Column(name = "active")
     private boolean active;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

@@ -44,7 +44,7 @@ public class Post {
 
     @Column(name = "house_number")
     @NotEmpty(message = "Поле не может быть пустым")
-    @Pattern(regexp = "^[0-9]+/[0-9A-Za-z]*$", message = "Неправильный формат номера дома")
+    @Pattern(regexp = "^[0-9]+(/\\d)?[A-Za-z]?$", message = "Неверный формат номера дома")//TODO: формат может быть следующим 123, 123A, 123/2, 123/2A, 123A/2, 123Ac1
     private String houseNumber;
 
     @Column(name = "phone_number")

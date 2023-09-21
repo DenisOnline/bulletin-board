@@ -11,65 +11,36 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/header :: header(isAuthenticated=${isAuthenticated})"></header>
 <main>
     <div class="album py-5 bg-body-tertiary">
         <div class="container w-25">
             <form th:action="@{/registration}" th:object="${user}" method="POST">
                 <h1 class="text-center mb-4">Регистрация</h1>
 
-<!--                <div class="form-outline mb-4">-->
-<!--                    <input th:field="*{name}" type="text" id="registerName" name="name" class="form-control"/>-->
-<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>-->
-<!--                    <label class="form-label" for="registerName">Контактное лицо</label>-->
-<!--                </div>-->
-
-<!--                <div class="form-outline mb-4">-->
-<!--                    <input th:field="*{email}" type="email" id="email" name="email" class="form-control"/>-->
-<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
-<!--                    <label class="form-label" for="email">Почта</label>-->
-<!--                </div>-->
-
-<!--                <div class="form-outline mb-4">-->
-<!--                    <input th:field="*{phoneNumber}" id="phoneNumber" name="phoneNumber" class="form-control"/>-->
-<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>-->
-<!--                    <label class="form-label" for="phoneNumber">Номер телефона</label>-->
-<!--                </div>-->
-
-<!--                <div class="form-outline mb-4">-->
-<!--                    <input th:field="*{password}" type="password" id="password" name="password" class="form-control"/>-->
-<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
-<!--                    <label class="form-label" for="password">Пароль</label>-->
-<!--                </div>-->
-
                 <div class="form-outline mb-4">
-                    <input type="text" id="registerName" name="name" class="form-control"/>
-                    <div class="alert alert-warning"></div>
+                    <input th:field="*{name}" type="text" id="registerName" name="name" class="form-control"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     <label class="form-label" for="registerName">Контактное лицо</label>
                 </div>
 
                 <div class="form-outline mb-4">
-                    <input type="email" id="email" name="email" class="form-control"/>
-                    <div class="alert alert-warning"></div>
+                    <input th:field="*{email}" type="email" id="email" name="email" class="form-control"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                     <label class="form-label" for="email">Почта</label>
                 </div>
 
                 <div class="form-outline mb-4">
-                    <input id="phoneNumber" name="phoneNumber" class="form-control"/>
-                    <div class="alert alert-warning"></div>
+                    <input th:field="*{phoneNumber}" id="phoneNumber" name="phoneNumber" class="form-control"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
                     <label class="form-label" for="phoneNumber">Номер телефона</label>
                 </div>
 
                 <div class="form-outline mb-4">
-                    <input type="password" id="password" name="password" class="form-control"/>
-                    <div class="alert alert-warning"></div>
+                    <input th:field="*{password}" type="password" id="password" name="password" class="form-control"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     <label class="form-label" for="password">Пароль</label>
                 </div>
-
-<!--                <div class="form-outline mb-4">-->
-<!--                    <input type="password" id="registerRepeatPassword" class="form-control"/>-->
-<!--                    <label class="form-label" for="registerRepeatPassword">Повторите пароль</label>-->
-<!--                </div>-->
 
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
 

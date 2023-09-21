@@ -12,20 +12,42 @@
 </head>
 
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/header :: header(isAuthenticated=${isAuthenticated})"></header>
 <main>
-<!--    <div class="album py-5 bg-body-tertiary">-->
-<!--        <div class="container w-85">-->
-<!--            <form th:action="/admin/user/edit" method="post">-->
-<!--                <div th:each="role:${roles}">-->
-<!--                    <label><input type="checkbox" name="role" th:checked="${user.roles.contains(role)}"/></label>-->
-<!--                </div>-->
-<!--                <input type="hidden" th:value="${user.id}" name="userId">-->
-<!--                <input type="hidden" th:value="${_csrf.token}" name="_csrf">-->
-<!--                <button type="submit">Сохранить</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container w-50">
+            <form th:action="'/user/profile/' + ${user.id}" method="post">
+                <h2 class="mb-3">Редактирование профиля</h2>
+                <h3 class="mb-2">Аватар:</h3>
+                <div class="mb-2">
+                    <input id="file" name="file" type="file" class="form-control" data-show-upload="false"
+                           data-show-caption="true">
+                </div>
+                <h3 class="mb-2">Подробная информация</h3>
+
+                <div class="form-outline mb-4">
+                    <input th:value="${userEdit.name}" type="text" id="registerName" name="name" class="form-control"/>
+<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>-->
+                    <label class="form-label" for="registerName">Контактное лицо</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <input th:value="${userEdit.phoneNumber}" type="phoneNumber" id="phoneNumber" name="phoneNumber" class="form-control"/>
+<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>-->
+                    <label class="form-label" for="phoneNumber">Почта</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <input th:value="${userEdit.name}" type="email" id="email" name="email" class="form-control"/>
+<!--                    <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
+                    <label class="form-label" for="email">Почта</label>
+                </div>
+
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
 </main>
 
 <footer th:replace="fragments/footer :: footer"></footer>

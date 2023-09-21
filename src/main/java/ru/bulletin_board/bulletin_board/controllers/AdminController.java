@@ -2,6 +2,7 @@ package ru.bulletin_board.bulletin_board.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import ru.bulletin_board.bulletin_board.models.User;
 import ru.bulletin_board.bulletin_board.models.enums.Role;
 import ru.bulletin_board.bulletin_board.services.PostService;
 import ru.bulletin_board.bulletin_board.services.UserService;
+import ru.bulletin_board.bulletin_board.utils.CheckAuthentication;
 
 import java.util.Map;
 
@@ -20,12 +22,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
-    private final UserService userService;
+    private final UserService userService;//TODO: кнопка вход/регистрация должна скрываться, когда пользователь выполнил вход/регистрацию
     private final PostService postService;
 
     @GetMapping("/admin/user")
-    public String adminPanelUser(Model model) {
+    public String adminPanelUser(Model model,
+                                 Authentication authentication) {
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("isAuthenticated", CheckAuthentication.addAuthenticationAttributes(authentication));
         return "admin-panel-user";
     }
 
@@ -41,22 +45,11 @@ public class AdminController {
         return "redirect:/admin/user";
     }
 
-//    @GetMapping("/admin/user/edit/{user}")
-//    public String userEdit(@PathVariable("user") User user, Model model) {
-//        model.addAttribute("user", user);
-//        model.addAttribute("roles", Role.values());
-//        return "user-edit";
-//    }
-
-//    @PostMapping("/admin/user/edit")
-//    public String userEdit(@RequestParam("userId") User user, @RequestParam Map<String, String> form) {
-//        userService.changeUserRoles(user, form);
-//        return "redirect:/admin/user";
-//    }
-
     @GetMapping("/admin/post")
-    public String adminPanelPost(Model model) {
+    public String adminPanelPost(Model model,
+                                 Authentication authentication) {
         model.addAttribute("posts", postService.getPosts());
+        model.addAttribute("isAuthenticated", CheckAuthentication.addAuthenticationAttributes(authentication));
         return "admin-panel-post-access";
     }
 
@@ -67,8 +60,11 @@ public class AdminController {
     }
 
     @GetMapping("/admin/post/edit/{post}")
-    public String postEdit(@PathVariable("post") Post post, Model model) {
+    public String postEdit(@PathVariable("post") Post post,
+                           Model model,
+                           Authentication authentication) {
         model.addAttribute("post", post);
+        model.addAttribute("isAuthenticated", CheckAuthentication.addAuthenticationAttributes(authentication));
         return "post-info";
     }
 }
