@@ -15,40 +15,40 @@
 <main>
     <div class="album py-5 bg-body-tertiary">
         <div class="container w-25">
-            <h1 class="text-center mb-4">Регистрация</h1>
-            <div class="form-outline mb-4">
-                <input type="text" id="registerName" class="form-control"/>
-                <label class="form-label" for="registerName">Контактное лицо</лицо></label>
-            </div>
+            <form th:action="@{/registration}" method="POST">
+                <h1 class="text-center mb-4">Регистрация</h1>
 
-            <div class="form-outline mb-4">
-                <input type="text" id="registerSity" class="form-control"/>
-                <label class="form-label" for="registerSity">Город</label>
-            </div>
+                <div class="form-outline mb-4">
+                    <input type="text" id="registerName" name="name" class="form-control"/>
+                    <label class="form-label" for="registerName">Контактное лицо</label>
+                </div>
 
-            <div class="form-outline mb-4">
-                <input type="email" id="registerEmail" class="form-control"/>
-                <label class="form-label" for="registerEmail">Почта</label>
-            </div>
+                <div class="form-outline mb-4">
+                    <input type="email" id="email" name="email" class="form-control"/>
+                    <label class="form-label" for="email">Почта</label>
+                </div>
 
-            <div class="form-outline mb-4">
-                <input type="email" id="registerPhoneNumber" class="form-control"/>
-                <label class="form-label" for="registerPhoneNumber">Номер телефона</label>
-            </div>
+                <div class="form-outline mb-4">
+                    <input id="phoneNumber" name="phoneNumber" class="form-control"/>
+                    <label class="form-label" for="phoneNumber">Номер телефона</label>
+                </div>
 
-            <div class="form-outline mb-4">
-                <input type="password" id="registerPassword" class="form-control"/>
-                <label class="form-label" for="registerPassword">Пароль</label>
-            </div>
+                <div class="form-outline mb-4">
+                    <input type="password" id="password" name="password" class="form-control"/>
+                    <label class="form-label" for="password">Пароль</label>
+                </div>
 
-            <div class="form-outline mb-4">
-                <input type="password" id="registerRepeatPassword" class="form-control"/>
-                <label class="form-label" for="registerRepeatPassword">Повторите пароль</label>
-            </div>
+<!--                <div class="form-outline mb-4">-->
+<!--                    <input type="password" id="registerRepeatPassword" class="form-control"/>-->
+<!--                    <label class="form-label" for="registerRepeatPassword">Повторите пароль</label>-->
+<!--                </div>-->
 
-            <div class="col text-center">
-                <button type="submit" class="btn btn-primary btn-block mb-3">Регистрация</button>
-            </div>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary btn-block mb-3">Регистрация</button>
+                </div>
+            </form>
 
             <p class="text-center">or</p>
             <div class="col text-center">

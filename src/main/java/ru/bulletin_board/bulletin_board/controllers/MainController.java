@@ -32,12 +32,5 @@ public class MainController {
         return "profile";
     }
 
-    @GetMapping("/registration")
-    public String reg() {
-        return "registration";
-    }
-    @GetMapping("/authorization")
-    public String login() {
-        return "authorization";
-    }
+
 }

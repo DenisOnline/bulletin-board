@@ -22,8 +22,8 @@ public class Post {
     private Long id;
 
     @Column(name = "heading")
-    @NotEmpty(message = "Заголовок не может быть пустым")
-    @Size(max = 50, message = "Заголовок не должен превышать 50 символов")
+//    @NotEmpty(message = "Заголовок не может быть пустым")
+//    @Size(max = 30, message = "Заголовок не должен превышать 30 символов")
     private String heading;
 
     @Column(name = "description", columnDefinition = "text")
@@ -39,7 +39,7 @@ public class Post {
     private String address;
 
     @Column(name = "phone_number")
-    @Pattern(regexp = "^\\+?[0-9]*$", message = "Номер телефона должен содержать только цифры и символ '+'")
+    @Pattern(regexp = "^\\+?[0-9]*$", message = "Номер телефона должен содержать только цифры и символ '+'") //переделай, черт!
     private String phoneNumber;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")

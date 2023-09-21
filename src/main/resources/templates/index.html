@@ -49,10 +49,10 @@
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                             <div th:each="post : ${posts}" class="col">
                                 <div class="card shadow-sm">
-                                    <img th:src="@{'/image/post/' + ${post.getPreviewImageId()}}" alt="img" width="300" height="225"/>
+                                    <img th:src="@{'/images/post/' + ${post.getPreviewImageId()}}" alt="img" width="300" height="225"/>
                                     <div  class="card-body">
                                         <h6 th:text="${post.heading}"></h6>
-                                        <p th:text="${post.price}"></p>
+                                        <p th:text="${prices.get(post.id)}  + ' ₽'"></p>
                                         <p th:text="${post.address}"></p>
                                         <p th:text="${times.get(post.id)}"></p>
                                         <a th:href="'/post/' + ${post.id}" class="btn btn-warning">Подробнее</a>

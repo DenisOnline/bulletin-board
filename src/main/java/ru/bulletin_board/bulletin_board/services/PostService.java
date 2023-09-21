@@ -12,8 +12,6 @@ import ru.bulletin_board.bulletin_board.repositories.ImageRepository;
 import ru.bulletin_board.bulletin_board.repositories.PostRepository;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -22,7 +20,6 @@ import java.util.*;
 public class PostService {
     private final PostRepository postRepository;
     private final ImageRepository imageRepository;
-    private final DateTimeFormatter DATA_FORMAT = DateTimeFormatter.ofPattern("dd MMMM, HH:mm", new Locale("ru"));
 
     public List<Post> listPosts(String heading) {
         if (heading != null) {
@@ -58,18 +55,6 @@ public class PostService {
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
-    }
-
-    public String timeFormatting(LocalDateTime data) {
-        return data.format(DATA_FORMAT);
-    }
-
-    public Map<Long, String> timeFromPosts(List<Post> posts) {
-        Map<Long, String> dataMap = new HashMap<>();
-        posts.forEach(post -> {
-            dataMap.put(post.getId(), timeFormatting(post.getDateTime()));
-        });
-        return dataMap;
     }
 
     private Image toImageEntity(MultipartFile file) throws IOException {

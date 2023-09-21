@@ -36,10 +36,10 @@
                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img th:src="@{'/image/post/' + ${post.getPreviewImageId()}}" class="d-block w-100" width="636px" height="477px">
+                                <img th:src="@{'/images/post/' + ${post.getPreviewImageId()}}" class="d-block w-100" height="600px">
                             </div>
                             <div class="carousel-item" th:each="image : ${images}">
-                                <img th:src="@{'/image/post/' + ${image.getId()}}" class="d-block w-100" width="636px" height="477px">
+                                <img th:src="@{'/images/post/' + ${image.getId()}}" class="d-block w-100" height="600px">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-4">
                     <img src="" alt="img" class="img-thumbnail mb-2">
-                    <h2 th:text="${post.price}"></h2>
+                    <h2 th:text="${price} + ' ₽'"></h2>
                     <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal"
                             data-bs-target="#phoneModal">
                         Показать телефон
@@ -71,7 +71,7 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p th:text="${post.phoneNumber}">
+                                    <p th:text="${phoneNumber}">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
