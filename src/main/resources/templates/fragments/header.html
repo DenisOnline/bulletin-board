@@ -20,17 +20,21 @@
 
                 <div th:unless="${isAuthenticated == true}" class="text-end">
                     <a th:href="'/registration'" class="btn btn-outline-light me-2">Регистрация</a>
-                    <a th:href="'/login'" class="btn btn-warning">Вход</a>
+                    <a th:href="@{/login}" class="btn btn-warning">Вход</a>
                 </div>
 
                 <div th:unless="${isAuthenticated == false}" class="text-end">
-                    <form th:action="@{/logout}" method="post">
+                    <div class="d-inline-block align-middle"> <!-- Добавляем классы d-inline-block и align-middle -->
                         <a th:href="'/user/profile/4'" type="button" class="btn btn-link btn-floating mx-1">
                             <img src="/images/headshot.ico" height="40" width="40" alt="icon"/>
                         </a>
-                        <a th:href="'/login'" class="btn btn-warning">Выход</a>
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                    </form>
+                    </div>
+                    <div class="d-inline-block align-middle">
+                        <form th:action="@{/logout}" method="post" class="mb-0">
+                            <button type="submit" class="btn btn-warning">Выход</button>
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        </form>
+                    </div>
                 </div>
 
                 <div class="text-end" style="margin-left: 10px;">

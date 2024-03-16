@@ -39,8 +39,6 @@ public class UserController {
         return "login";
     }
 
-
-
     @PostMapping("/registration")
     public String createUser(@Valid @ModelAttribute("user") User user,
                              BindingResult bindingResult,
