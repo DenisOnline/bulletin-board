@@ -9,8 +9,6 @@ import ru.bulletin_board.bulletin_board.models.enums.Role;
 import ru.bulletin_board.bulletin_board.repositories.UserRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 
 @Service
 @Slf4j
@@ -68,6 +66,10 @@ public class UserService {
             }
         }
         userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }
 

@@ -2,103 +2,81 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>title</title>
+    <title>Chat</title>
     <link rel="shortcut icon" href="/images/icon.ico"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 
 <body>
-<header th:replace="fragments/header :: header(isAuthenticated=${isAuthenticated})"></header>
 <main>
-    <div class="album py-5 bg-body-tertiary">
-        <div class="container w-75">
-            <button type="button" class="btn-close mb-2" aria-label="Close"></button>
-            <div class="row" style="background-color: #eee;">
-                <div class="col-2 mt-4">
-                    <img src="" alt="img_user" class="img-thumbnail" width="48px" height="48px">
-                </div>
-                <div class="col-10 mt-4">
-                    <h6>Имя пользователя</h6>
-                    <p>Был в сети</p>
-                </div>
-            </div>
-            <section>
-                <div class="container py-5">
-                    <div>
-                        <ul class="list-unstyled">
-                            <li class="d-flex justify-content-between mb-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                                     class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0">Brad Pitt</p>
-                                        <p class="text-muted small mb-0"><i class="far fa-clock"></i> 12 mins ago</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut
-                                            labore et dolore magna aliqua.
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="d-flex justify-content-between mb-4">
-                                <div class="card w-100">
-                                    <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0">Lara Croft</p>
-                                        <p class="text-muted small mb-0"><i class="far fa-clock"></i> 13 mins ago</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0">
-                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                                            doloremque
-                                            laudantium.
-                                        </p>
-                                    </div>
-                                </div>
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                                     class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-                            </li>
-                            <li class="d-flex justify-content-between mb-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                                     class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0">Brad Pitt</p>
-                                        <p class="text-muted small mb-0"><i class="far fa-clock"></i> 10 mins ago</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut
-                                            labore et dolore magna aliqua.
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="bg-white mb-3">
-                                <div class="form-outline">
-                                    <textarea class="form-control" id="textAreaExample2" rows="4"></textarea>
-                                </div>
-                            </li>
-                            <button type="button" class="btn btn-info btn-rounded float-end">Send</button>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+    <div class="container py-5">
+        <ul id="chatMessages" class="list-unstyled"></ul>
+        <div class="input-group mb-3">
+            <textarea id="messageInput" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+            <button id="sendMessageBtn" class="btn btn-primary" type="button">Send</button>
         </div>
     </div>
 </main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Функция для добавления сообщения в чат
+        function addMessageToChat(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const listItem = document.createElement('li');
+            listItem.classList.add('mb-3');
 
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
+            const senderAvatar = document.createElement('img');
+            senderAvatar.src = message.senderAvatar;
+            senderAvatar.alt = 'Sender Avatar';
+            senderAvatar.classList.add('rounded-circle', 'me-3', 'shadow-1-strong');
+            senderAvatar.style.width = '60px';
+            senderAvatar.style.height = '60px';
+
+            const messageCard = document.createElement('div');
+            messageCard.classList.add('card', 'w-75');
+
+            const messageCardBody = document.createElement('div');
+            messageCardBody.classList.add('card-body');
+
+            const messageContent = document.createElement('p');
+            messageContent.classList.add('mb-0');
+            messageContent.textContent = message.content;
+
+            messageCardBody.appendChild(messageContent);
+            messageCard.appendChild(messageCardBody);
+
+            if (message.position === 'left') {
+                listItem.appendChild(senderAvatar);
+                listItem.appendChild(messageCard);
+            } else {
+                listItem.appendChild(messageCard);
+                listItem.appendChild(senderAvatar);
+            }
+
+            chatMessages.appendChild(listItem);
+        }
+
+        // Пример сообщений
+        const exampleMessages = [
+            {senderAvatar: 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', position: 'left'},
+            {senderAvatar: 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp', content: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem.', position: 'right'},
+        ];
+
+        // Отображение примерных сообщений
+        exampleMessages.forEach(message => addMessageToChat(message));
+
+        // Обработчик нажатия кнопки отправки сообщения
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        sendMessageBtn.addEventListener('click', function () {
+            const messageInput = document.getElementById('messageInput');
+            const newMessage = {content: messageInput.value, position: 'right'}; // Предположим, что это отправляемое сообщение
+            addMessageToChat(newMessage);
+            messageInput.value = ''; // Очищаем поле ввода после отправки сообщения
+        });
+    });
+</script>
 
 </body>
+</html>

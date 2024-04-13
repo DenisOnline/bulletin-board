@@ -45,8 +45,10 @@
             <div class="row">
                 <div class="col-9">
                     <div class="container">
+                        <h2>Избранное</h2>
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            <div th:each="post : ${posts}" th:if="${post.access == true}" class="col">
+                            <!-- Отображение списка избранных постов -->
+                            <div th:each="post : ${favoritePosts}" class="col">
                                 <div class="card shadow-sm">
                                     <img th:src="@{'/images/post/' + ${post.getPreviewImageId()}}" alt="img" width="301"
                                          height="225"/>
@@ -54,18 +56,9 @@
                                         <h6 th:text="${post.heading}"></h6>
                                         <p th:text="${prices.get(post.id)} + ' ₽'"></p>
                                         <p th:text="${post.city} + ', ' + ${post.street} + ', ' + ${post.houseNumber}"></p>
-                                        <p th:text="${times.get(post.id)}"></p>
+                                        <!-- Другие поля поста, которые нужно отобразить -->
                                         <div class="d-flex justify-content-between align-items-center">
                                             <a th:href="'/post/' + ${post.id}" class="btn btn-warning">Подробнее</a>
-                                            <form id="likeForm" th:action="@{/like}" method="post">
-                                                <input type="hidden" name="postId" th:value="${post.id}" />
-                                                <button type="button" class="btn btn-link like-button" th:if="${favoriteStatusMap.get(post.id)}">
-                                                    <img src="images/full-heart.png" alt="heart" width="20" height="20">
-                                                </button>
-                                                <button type="button" class="btn btn-link like-button" th:unless="${favoriteStatusMap.get(post.id)}">
-                                                    <img src="images/empty-heart.png" alt="heart" width="20" height="20">
-                                                </button>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -75,30 +68,8 @@
                     <br>
                 </div>
                 <div class="col-3">
-                    <h4 class="mb-3">Избранное</h4>
-<!--                    <div th:replace="fragments/favourites :: favourites"></div>-->
-                    <div class="list-group">
-                        <!-- Проверяем наличие записей и выводим сообщение "пусто", если список пуст -->
-                        <div th:if="${favoritePosts.isEmpty()}" class="text-center">
-                            <p>Пусто</p>
-                        </div>
-                        <div th:each="favoritePost : ${favoritePosts}">
-                            <a th:href="@{'/post/' + ${favoritePost.post.id}}" class="list-group-item list-group-item-action">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <img th:src="@{'/images/post/' + ${favoritePost.post.getPreviewImageId()}}"
-                                             alt="Post Image" width="150" height="125" class="img-thumbnail"/>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <h6 th:text="${favoritePost.post.heading}" class="mb-1"></h6>
-                                        <p th:text="${prices.get(favoritePost.post.id)} + ' ₽'" class="mb-1"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
                     <h4 class="mb-3">Вы смотрели</h4>
-<!--                    <div th:replace="fragments/recent :: recent"></div>-->
+                    <!--                    <div th:replace="fragments/recent :: recent"></div>-->
                     <div class="list-group">
                         <!-- Проверяем наличие записей и выводим сообщение "пусто", если список пуст -->
                         <div th:if="${viewPosts.isEmpty()}" class="text-center">
@@ -123,40 +94,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.like-button').click(function(event) {
-                event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-
-                var form = $(this).closest('form'); // Находим ближайшую форму
-                var postData = form.serialize(); // Получаем данные формы
-
-                $.ajax({
-                    type: form.attr('method'), // Получаем метод формы (POST)
-                    url: form.attr('action'), // Получаем URL формы (/like)
-                    data: postData, // Передаем данные формы
-                    success: function(response) {
-                        // Успешный ответ сервера
-                        // Здесь можно обновить состояние кнопки "лайк"
-                        var imgSrc = $(form).find('img').attr('src');
-                        if (imgSrc === 'images/empty-heart.png') {
-                            $(form).find('img').attr('src', 'images/full-heart.png');
-                        } else {
-                            $(form).find('img').attr('src', 'images/empty-heart.png');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Обработка ошибок, если не удалось отправить форму
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script>
 </main>
-
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"

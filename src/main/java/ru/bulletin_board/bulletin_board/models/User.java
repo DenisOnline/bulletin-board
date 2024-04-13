@@ -59,6 +59,9 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Post> products = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<FavoritePost> favoritePosts = new ArrayList<>();
+
     private LocalDateTime dateOfCreated;
 
     public boolean isAdmin() {

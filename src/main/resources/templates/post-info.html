@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <br>
-                    <a th:href="'/messenger'" class="btn btn-primary">Написать сообщение</a><br>
+                    <a th:href="'/dialog-box/' + ${user.getId()}" class="btn btn-primary">Написать сообщение</a><br>
                     <a th:href="'/user/profile/' + ${user.getId()}" th:text="${user.name}" class="fs-4 text-decoration-none text-body"></a>
                     <p>когда был в сети!</p>
                     <p th:text="'На плащадке с ' + ${dateOfCreatedUser}">

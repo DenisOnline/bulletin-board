@@ -65,7 +65,7 @@ public class PostService {
         return postRepository.findById(id).orElse(null);
     }
 
-    private Image toImageEntity(MultipartFile file) throws IOException {
+    private Image toImageEntity(MultipartFile file) throws IOException { //TODO: переделать под DTO
         Image image = new Image();
         image.setName(file.getName());
         image.setOriginalFileName(file.getOriginalFilename());
@@ -81,7 +81,7 @@ public class PostService {
     }
 
     @Transactional
-    public List<ImageDto> listImagesDtos(Post post) {
+    public List<ImageDto> listImagesDtos(Post post) { //TODO: переделать под DTO
         List<ImageDto> imageDtos = new ArrayList<>(imageRepository.findAllByPost(post).stream().map(i -> new ImageDto(i.getId())).toList());
         imageDtos.remove(0);
         return imageDtos;
