@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-
 @Entity
 @Table(name = "viewed_posts")
 @AllArgsConstructor

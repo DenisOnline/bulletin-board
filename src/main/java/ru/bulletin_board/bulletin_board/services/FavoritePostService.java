@@ -21,6 +21,10 @@ public class FavoritePostService {
     private final FavoritePostRepository favoritePostRepository;
     public void addPostToFavorites(User user, Post post) {
         FavoritePost favoritePost = new FavoritePost(user, post);
+        if (post.getLikesCount() == null) {
+            post.setLikesCount(0);
+        }
+        post.setLikesCount(post.getLikesCount() + 1);
         favoritePostRepository.save(favoritePost);
     }
 
@@ -32,10 +36,6 @@ public class FavoritePostService {
         return favoritePostRepository.existsByPostId(postId);
     }
 
-    @Transactional
-    public void removePostFromFavorites(Long postId) {
-        favoritePostRepository.deleteByPostId(postId);
-    }
 
     public Map<Long, Boolean> isFavorite(List<Post> posts) {
         Map<Long, Boolean> favoriteStatusMap = new HashMap<>();
@@ -52,5 +52,24 @@ public class FavoritePostService {
         return favoritePosts.stream()
                 .map(FavoritePost::getPost)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isPostLikedByUser(Long postId, User user) {
+        List<FavoritePost> favoritePosts = favoritePostRepository.findByUser(user);
+        for (FavoritePost favoritePost : favoritePosts) {
+            if (favoritePost.getPost().getId().equals(postId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional
+    public void removePostFromFavorites(User user, Post post) {
+        FavoritePost favoritePost = favoritePostRepository.findByUserAndPost(user, post);
+        if (favoritePost != null) {
+            post.setLikesCount(post.getLikesCount() - 1);
+            favoritePostRepository.delete(favoritePost);
+        }
     }
 }

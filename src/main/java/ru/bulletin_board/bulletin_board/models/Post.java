@@ -26,7 +26,7 @@ public class Post {
     @Size(max = 30, message = "Заголовок не должен превышать 30 символов")
     private String heading;
 
-    @Column(name = "description", columnDefinition = "text")
+    @Column(name = "description", columnDefinition = "TEXT")
     @NotEmpty(message = "Описание не может быть пустым")
     private String description;
 
@@ -50,6 +50,11 @@ public class Post {
     @Column(name = "phone_number")
     @Pattern(regexp = "^\\+?[0-9]*$", message = "Номер телефона должен содержать только цифры и символ '+'")
     private String phoneNumber;
+    @Column(name = "views_count")
+    private Integer viewsCount;
+
+    @Column(name = "likes_count")
+    private Integer likesCount;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
     private List<Image> images = new ArrayList<>();
