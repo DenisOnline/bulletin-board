@@ -19,17 +19,17 @@ public class FavoritePostController {
 
     @PostMapping("/like")
     public ModelAndView likePost(@RequestParam Long postId, Authentication authentication) {
-        boolean isFavorite = favoritePostService.isPostInFavorites(postId);
+        User user = (User) authentication.getPrincipal();
+        Post post = postService.getPostById(postId);
 
-        if (!isFavorite) {
-            User user = (User) authentication.getPrincipal();
-            Post post = postService.getPostById(postId);
+        boolean isLikedByUser = favoritePostService.isPostLikedByUser(postId, user);
+
+        if (!isLikedByUser) {
             favoritePostService.addPostToFavorites(user, post);
         } else {
-            favoritePostService.removePostFromFavorites(postId);
+            favoritePostService.removePostFromFavorites(user, post);
         }
 
-        // Перенаправляем на страницу, где был сделан запрос
         return new ModelAndView("redirect:/");
     }
 }

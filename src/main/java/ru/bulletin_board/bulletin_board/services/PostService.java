@@ -25,8 +25,6 @@ public class PostService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
 
-//    private static final Logger logger = LogManager.getLogger(PostService.class);
-
     public List<Post> listPosts(String heading) {
         if (heading != null) {
             postRepository.findByHeading(heading);
@@ -102,6 +100,11 @@ public class PostService {
                 log.info("Unban post with id = {}; heading: {}", post.getId(), post.getHeading());
             }
         }
+        postRepository.save(post);
+    }
+
+    public void updateViewsCountPost(Post post, int actualViewsCount) {
+        post.setViewsCount(actualViewsCount + 1);
         postRepository.save(post);
     }
 }

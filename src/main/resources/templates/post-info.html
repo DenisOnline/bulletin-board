@@ -27,19 +27,21 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-left mb-md-0">
                 <li><p th:text="${post.city}" class="text-dark"></p></li>
                 <li><p class="text-dark ms-2">|</p></li>
-                <li><p th:text="${data}" class="text-dark ms-2"></p></li>
+                <li><p th:text="${timePostCreat}" class="text-dark ms-2"></p></li>
                 <li><p class="text-dark ms-2">|</p></li>
-                <li><p class="text-dark ms-2">Просмотры!</p></li>
+                <li><p th:text="'Просмотры: ' + ${post.viewsCount}" class="text-dark ms-2"></p></li>
             </ul>
             <div class="row">
                 <div class="col-8">
                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img th:src="@{'/images/post/' + ${post.getPreviewImageId()}}" class="d-block w-100" height="600px">
+                                <img th:src="@{'/images/post/' + ${post.getPreviewImageId()}}" class="d-block w-100"
+                                     height="600px">
                             </div>
                             <div class="carousel-item" th:each="image : ${images}">
-                                <img th:src="@{'/images/post/' + ${image.getId()}}" class="d-block w-100" height="600px">
+                                <img th:src="@{'/images/post/' + ${image.getId()}}" class="d-block w-100"
+                                     height="600px">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
@@ -82,7 +84,8 @@
                     </div>
                     <br>
                     <a th:href="'/dialog-box/' + ${user.getId()}" class="btn btn-primary">Написать сообщение</a><br>
-                    <a th:href="'/user/profile/' + ${user.getId()}" th:text="${user.name}" class="fs-4 text-decoration-none text-body"></a>
+                    <a th:href="'/user/profile/' + ${user.getId()}" th:text="${user.name}"
+                       class="fs-4 text-decoration-none text-body"></a>
                     <p>когда был в сети!</p>
                     <p th:text="'На плащадке с ' + ${dateOfCreatedUser}">
                 </div>
@@ -90,23 +93,34 @@
             <br>
             <hr>
             <h2>Адрес</h2>
-            <p th:text="${post.city} + ', ' + ${post.street} + ', ' + ${post.houseNumber}"></p>
-<!--            <div class="row w-75 mb-5">-->
-<!--                <div class="col-lg-6 my-4">-->
-<!--                    <div style="position:relative;overflow:hidden;"><a-->
-<!--                            href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps"-->
-<!--                            style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a-->
-<!--                            href="https://yandex.ru/maps/213/moscow/?ll=37.691528%2C55.738716&utm_medium=mapframe&utm_source=maps&z=10.51"-->
-<!--                            style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва и Московская область —-->
-<!--                        Яндекс Карты</a>-->
-<!--                        <iframe src="https://yandex.ru/map-widget/v1/?ll=37.691528%2C55.738716&z=10.51" width="560"-->
-<!--                                height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <p th:text="${post.city} + ', ' + ${post.street} + ', ' + ${post.houseNumber}" id="address"></p>
+            <div class="row w-75 mb-5">
+                <div class="col-lg-6 my-4">
+                    <div id="map" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+            <script th:src="@{'https://api-maps.yandex.ru/2.1/?apikey=' + ${yandexMapApiKey} + '&amp;lang=ru_RU'}"></script>
+            <script type="text/javascript">
+                ymaps.ready(function () {
+                    var addressElement = document.getElementById('address'); // Получаем элемент <p> по id
+                    var address = addressElement.textContent.trim(); // Получаем текст адреса из элемента
+                    var geocoder = ymaps.geocode(address); // Используем полученный адрес для геокодирования
+                    geocoder.then(function (res) {
+                        var coords = res.geoObjects.get(0).geometry.getCoordinates();
+                        var map = new ymaps.Map('map', {
+                            center: coords,
+                            zoom: 18
+                        });
+                        map.geoObjects.add(new ymaps.Placemark(coords, {}, {
+                            preset: 'islands#dotIcon',
+                            iconColor: '#ff0000'
+                        }));
+                    });
+                });
+            </script>
             <hr>
             <h2>Описание</h2>
-            <p th:text="${post.description}"></p>
+            <pre th:text="${post.description}" class="preformatted-text"></pre>
             <br>
             <form th:if="${isCurrentUserTheCreator}" th:action="'/post/' + ${post.id} + '/edit'" method="get">
                 <button type="submit" class="btn btn-warning mb-2">Редактировать</button>

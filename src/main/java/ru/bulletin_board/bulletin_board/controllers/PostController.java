@@ -2,6 +2,7 @@ package ru.bulletin_board.bulletin_board.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,6 @@ import ru.bulletin_board.bulletin_board.models.User;
 import ru.bulletin_board.bulletin_board.models.ViewedPost;
 import ru.bulletin_board.bulletin_board.services.FavoritePostService;
 import ru.bulletin_board.bulletin_board.services.PostService;
-import ru.bulletin_board.bulletin_board.services.UserService;
 import ru.bulletin_board.bulletin_board.services.ViewedPostService;
 import ru.bulletin_board.bulletin_board.utils.CheckAuthentication;
 import ru.bulletin_board.bulletin_board.utils.DataFormatting;
@@ -24,6 +24,7 @@ import ru.bulletin_board.bulletin_board.utils.PriceFormatting;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +33,10 @@ import java.util.Map;
 public class PostController {
     public static final String HOME_PAGE = "/";
     private final PostService postService;
-    private final UserService userService;
     private final ViewedPostService viewedPostService;
     private final FavoritePostService favoritePostService;
+    @Value("${yandex.maps.apikey}")
+    private String YANDEX_MAP_API_KEY;
 
 
     @GetMapping(HOME_PAGE)
@@ -45,12 +47,16 @@ public class PostController {
         Map<Long, String> times = DataFormatting.timeFromPosts(posts);
         Map<Long, String> prices = PriceFormatting.priceFromPosts(posts);
         User user = (User) authentication.getPrincipal();
+        Map<Long, Boolean> favoriteStatusMap = new HashMap<>();
+        for (Post post : posts) {
+            boolean isLikedByUser = favoritePostService.isPostLikedByUser(post.getId(), user);
+            favoriteStatusMap.put(post.getId(), isLikedByUser);
+        }
         List<FavoritePost> favoritePosts = favoritePostService.getFavoritePostsForUser(user);
-        Map<Long, Boolean> isFavorite = favoritePostService.isFavorite(posts);
         List<ViewedPost> viewPosts = viewedPostService.getViewedPostsForUser(user);
         model.addAttribute("favoritePosts", favoritePosts);
         model.addAttribute("viewPosts", viewPosts);
-        model.addAttribute("favoriteStatusMap", isFavorite);
+        model.addAttribute("favoriteStatusMap", favoriteStatusMap);
         model.addAttribute("posts", posts);
         model.addAttribute("times", times);
         model.addAttribute("prices", prices);
@@ -86,26 +92,33 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public String postInfo(@PathVariable Long id,
-                           Principal principal,
                            Model model,
                            Authentication authentication) {
         Post post = postService.getPostById(id);
         User user = (User) authentication.getPrincipal();
-        viewedPostService.addToViewHistory(user, post);
+        boolean isCurrentUserTheCreator = user.equals(post.getUser());
+        if (!isCurrentUserTheCreator) {
+            viewedPostService.addToViewHistory(user, post);
+            Integer viewsCount = post.getViewsCount();
+            int actualViewsCount = (viewsCount != null) ? viewsCount : 0;
+            postService.updateViewsCountPost(post, actualViewsCount);
+        }
         String price = PriceFormatting.priceFormatting(post.getPrice());
         String phoneNumber = PhoneNumberFormatting.formatPhoneNumber(post.getPhoneNumber());
         List<ImageDto> imageDtos = postService.listImagesDtos(post);
         User postCreator = post.getUser();
-        boolean isCurrentUserTheCreator = user.equals(postCreator);
         String dateOfCreatedUser = DataFormatting.timeFormatting(postCreator.getDateOfCreated());
+        String timePostCreat = DataFormatting.timeFormatting(post.getDateTime());
         model.addAttribute("post", post);
         model.addAttribute("price", price);
         model.addAttribute("phoneNumber", phoneNumber);
         model.addAttribute("images", imageDtos);
         model.addAttribute("user", postCreator);
         model.addAttribute("dateOfCreatedUser", dateOfCreatedUser);
+        model.addAttribute("timePostCreat", timePostCreat);
         model.addAttribute("isCurrentUserTheCreator", isCurrentUserTheCreator);
         model.addAttribute("isAuthenticated", CheckAuthentication.addAuthenticationAttributes(authentication));
+        model.addAttribute("yandexMapApiKey", YANDEX_MAP_API_KEY);
 
         return "post-info";
     }
@@ -150,7 +163,13 @@ public class PostController {
         Map<Long, String> prices = PriceFormatting.priceFromPosts(posts);
         List<Post> favoritePosts = favoritePostService.getAllFavoritePosts(currentUser);
         List<ViewedPost> viewPosts = viewedPostService.getViewedPostsForUser(currentUser);
+        Map<Long, Boolean> favoriteStatusMap = new HashMap<>();
+        for (Post post : posts) {
+            boolean isLikedByUser = favoritePostService.isPostLikedByUser(post.getId(), currentUser);
+            favoriteStatusMap.put(post.getId(), isLikedByUser);
+        }
         model.addAttribute("favoritePosts", favoritePosts);
+        model.addAttribute("favoriteStatusMap", favoriteStatusMap);
         model.addAttribute("viewPosts", viewPosts);
         model.addAttribute("prices", prices);
         return "favourites";

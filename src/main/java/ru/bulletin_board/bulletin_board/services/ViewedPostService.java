@@ -17,7 +17,6 @@ public class ViewedPostService {
 
     public void addToViewHistory(User user, Post post) {
         ViewedPost existingHistory = viewedPostRepository.findByUserAndPost(user, post);
-
         if (existingHistory != null) {
             existingHistory.setViewedAt(LocalDateTime.now());
         } else {
